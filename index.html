@@ -3,18 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Global & MY–US Market Intelligence Dashboard</title>
+  <title>Global & MY–US Market Intelligence & Trading System</title>
   <style>
     :root {
-      --bg-dark: #0f172a;
-      --card-bg: #1e293b;
-      --card-border: #334155;
-      --text-main: #f8fafc;
+      --bg-dark: #0a0f1d;
+      --card-bg: #131d31;
+      --card-border: #22324e;
+      --text-main: #f1f5f9;
       --text-muted: #94a3b8;
       --accent-green: #10b981;
       --accent-red: #ef4444;
       --accent-yellow: #f59e0b;
       --accent-blue: #3b82f6;
+      --accent-purple: #8b5cf6;
     }
 
     * {
@@ -27,29 +28,38 @@
     body {
       background-color: var(--bg-dark);
       color: var(--text-main);
-      padding: 20px;
+      padding: 16px 24px 40px;
       line-height: 1.5;
     }
 
     header {
-      margin-bottom: 24px;
+      margin-bottom: 20px;
       border-bottom: 1px solid var(--card-border);
       padding-bottom: 16px;
     }
 
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
     h1 {
-      font-size: 1.75rem;
+      font-size: 1.65rem;
       font-weight: 700;
       display: flex;
       align-items: center;
       gap: 10px;
+      letter-spacing: -0.5px;
     }
 
     .badge-bar {
       display: flex;
       flex-wrap: wrap;
-      gap: 12px;
-      margin-top: 12px;
+      gap: 10px;
+      margin-top: 14px;
     }
 
     .status-badge {
@@ -57,10 +67,10 @@
       border: 1px solid var(--card-border);
       padding: 6px 14px;
       border-radius: 9999px;
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
     }
 
     .status-dot {
@@ -70,8 +80,8 @@
     }
 
     .dot-green { background-color: var(--accent-green); box-shadow: 0 0 8px var(--accent-green); }
-    .dot-red { background-color: var(--accent-red); }
-    .dot-yellow { background-color: var(--accent-yellow); }
+    .dot-red { background-color: var(--accent-red); box-shadow: 0 0 8px var(--accent-red); }
+    .dot-yellow { background-color: var(--accent-yellow); box-shadow: 0 0 8px var(--accent-yellow); }
 
     .grid-2 {
       display: grid;
@@ -80,7 +90,7 @@
       margin-bottom: 24px;
     }
 
-    @media (min-width: 992px) {
+    @media (min-width: 1024px) {
       .grid-2 {
         grid-template-columns: 1fr 1fr;
       }
@@ -91,10 +101,11 @@
       border: 1px solid var(--card-border);
       border-radius: 12px;
       padding: 20px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
     }
 
     .card-title {
-      font-size: 1.15rem;
+      font-size: 1.1rem;
       font-weight: 600;
       margin-bottom: 14px;
       display: flex;
@@ -103,17 +114,59 @@
     }
 
     .ticker-tape-container {
-      margin-bottom: 24px;
+      margin-bottom: 20px;
       border-radius: 10px;
       overflow: hidden;
       border: 1px solid var(--card-border);
     }
 
+    .chart-container {
+      margin-bottom: 24px;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--card-border);
+      background: var(--card-bg);
+    }
+
+    .chart-header {
+      padding: 12px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      border-bottom: 1px solid var(--card-border);
+      background: rgba(10, 15, 29, 0.6);
+    }
+
+    .chart-tabs {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .chart-btn {
+      background: #1e293b;
+      border: 1px solid var(--card-border);
+      color: var(--text-muted);
+      padding: 5px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.8rem;
+      font-weight: 600;
+      transition: all 0.2s ease;
+    }
+
+    .chart-btn:hover, .chart-btn.active {
+      background: var(--accent-blue);
+      color: #fff;
+      border-color: var(--accent-blue);
+    }
+
     table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 0.9rem;
-      margin-top: 10px;
+      font-size: 0.88rem;
     }
 
     th, td {
@@ -124,45 +177,55 @@
 
     th {
       color: var(--text-muted);
-      font-weight: 500;
-      background: rgba(15, 23, 42, 0.4);
+      font-weight: 600;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      background: rgba(10, 15, 29, 0.4);
     }
 
     .tag {
       display: inline-block;
       padding: 2px 8px;
       border-radius: 4px;
-      font-size: 0.75rem;
-      font-weight: 600;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
     }
 
-    .tag-bull { background: rgba(16, 185, 129, 0.2); color: var(--accent-green); border: 1px solid var(--accent-green); }
-    .tag-bear { background: rgba(239, 68, 68, 0.2); color: var(--accent-red); border: 1px solid var(--accent-red); }
-    .tag-warn { background: rgba(245, 158, 11, 0.2); color: var(--accent-yellow); border: 1px solid var(--accent-yellow); }
+    .tag-bull { background: rgba(16, 185, 129, 0.18); color: var(--accent-green); border: 1px solid var(--accent-green); }
+    .tag-bear { background: rgba(239, 68, 68, 0.18); color: var(--accent-red); border: 1px solid var(--accent-red); }
+    .tag-warn { background: rgba(245, 158, 11, 0.18); color: var(--accent-yellow); border: 1px solid var(--accent-yellow); }
+    .tag-info { background: rgba(59, 130, 246, 0.18); color: var(--accent-blue); border: 1px solid var(--accent-blue); }
 
     .calc-input-group {
-      margin-bottom: 14px;
+      margin-bottom: 12px;
     }
 
     .calc-input-group label {
       display: block;
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       color: var(--text-muted);
       margin-bottom: 4px;
     }
 
-    .calc-input-group input {
+    .calc-input-group input, .calc-input-group select {
       width: 100%;
-      background: #0f172a;
+      background: #0a0f1d;
       border: 1px solid var(--card-border);
       color: #fff;
       padding: 8px 12px;
       border-radius: 6px;
-      font-size: 0.95rem;
+      font-size: 0.92rem;
+    }
+
+    .calc-input-group input:focus, .calc-input-group select:focus {
+      outline: none;
+      border-color: var(--accent-blue);
     }
 
     .calc-results-box {
-      background: #0f172a;
+      background: #0a0f1d;
       border: 1px solid var(--card-border);
       border-radius: 8px;
       padding: 14px;
@@ -170,16 +233,35 @@
     }
 
     .highlight-val {
-      font-size: 1.1rem;
+      font-size: 1.15rem;
       font-weight: 700;
       color: var(--accent-green);
+    }
+
+    .checklist-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      font-size: 0.86rem;
+    }
+
+    .checklist-item input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
+      accent-color: var(--accent-green);
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
 
   <header>
-    <h1>📈 Global & MY–US Market & Trading Intelligence</h1>
+    <div class="header-top">
+      <h1>📈 Global & MY–US Market Intelligence System</h1>
+      <span style="font-size: 0.82rem; color: var(--text-muted);" id="clock-display">Synchronizing...</span>
+    </div>
     <div class="badge-bar">
       <div class="status-badge">
         <span class="status-dot" id="bursa-dot"></span>
@@ -191,16 +273,20 @@
       </div>
       <div class="status-badge">
         <span class="status-dot dot-green"></span>
-        <span>BNM OPR Benchmark: <b>2.75%</b> (GDP: >5%)</span>
+        <span>BNM OPR: <b>2.75%</b> (GDP: >5%)</span>
       </div>
       <div class="status-badge">
         <span class="status-dot dot-yellow"></span>
         <span>US 10Y Yield: <b>~4.89%</b> (Valuation Drag)</span>
       </div>
+      <div class="status-badge">
+        <span class="status-dot dot-red"></span>
+        <span>VIX Volatility: <b>>25</b> (Correction Alert)</span>
+      </div>
     </div>
   </header>
 
-  <!-- LIVE TRADINGVIEW TICKER TAPE (FREE PUBLIC EMBED) -->
+  <!-- LIVE TRADINGVIEW TICKER TAPE -->
   <div class="ticker-tape-container">
     <div class="tradingview-widget-container">
       <div class="tradingview-widget-container__widget"></div>
@@ -209,10 +295,12 @@
         "symbols": [
           {"proName": "FOREXCOM:SPXUSD", "title": "S&P 500"},
           {"proName": "FOREXCOM:NSXUSD", "title": "Nasdaq 100"},
-          {"proName": "AMEX:VOO", "title": "VOO S&P 500 ETF"},
-          {"proName": "NASDAQ:QQQM", "title": "QQQM Invesco ETF"},
+          {"proName": "AMEX:VOO", "title": "VOO (S&P 500)"},
+          {"proName": "NASDAQ:QQQM", "title": "QQQM (Nasdaq 100)"},
           {"proName": "NASDAQ:META", "title": "Meta Platforms"},
           {"proName": "NASDAQ:NVDA", "title": "Nvidia"},
+          {"proName": "MYX:MAYBANK", "title": "Maybank (MY)"},
+          {"proName": "MYX:TENAGA", "title": "Tenaga (MY)"},
           {"proName": "FX_IDC:USDMYR", "title": "USD/MYR Spot"},
           {"proName": "TVC:US10Y", "title": "US 10Y Yield"},
           {"proName": "CBOE:VIX", "title": "VIX Index"}
@@ -227,41 +315,58 @@
     </div>
   </div>
 
+  <!-- INTERACTIVE REAL-TIME CHART WIDGET WITH TOGGLE TABS -->
+  <div class="chart-container">
+    <div class="chart-header">
+      <span style="font-size: 0.95rem; font-weight: 600;">📊 Live Interactive Technical Chart (No API Token Required)</span>
+      <div class="chart-tabs">
+        <button class="chart-btn active" onclick="loadChart('NASDAQ:META', this)">META</button>
+        <button class="chart-btn" onclick="loadChart('AMEX:VOO', this)">VOO</button>
+        <button class="chart-btn" onclick="loadChart('NASDAQ:QQQM', this)">QQQM</button>
+        <button class="chart-btn" onclick="loadChart('FOREXCOM:NSXUSD', this)">Nasdaq 100</button>
+        <button class="chart-btn" onclick="loadChart('FOREXCOM:SPXUSD', this)">S&P 500</button>
+        <button class="chart-btn" onclick="loadChart('MYX:MAYBANK', this)">Maybank (MY)</button>
+        <button class="chart-btn" onclick="loadChart('MYX:TENAGA', this)">Tenaga (MY)</button>
+      </div>
+    </div>
+    <div id="tradingview_chart_frame" style="height: 480px; width: 100%;"></div>
+  </div>
+
   <div class="grid-2">
     <!-- MODULE 1: GLOBAL CONTAGION MONITOR -->
     <div class="card">
       <div class="card-title">
-        <span>🌍 Module 1: Global Spillover & Contagion</span>
-        <span class="tag tag-warn">LIVE RADAR</span>
+        <span>🌍 Module 1: Global Macro Spillover Radar</span>
+        <span class="tag tag-warn">LIVE STATUS</span>
       </div>
       <table>
         <thead>
           <tr>
             <th>Region</th>
             <th>Primary Catalyst</th>
-            <th>Impact on US & Malaysia</th>
+            <th>Spillover Impact on US & Malaysia</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <td><b>United States</b></td>
-            <td>Midterm regulatory shift; data center power moratorium threats; tech capex scrutiny</td>
-            <td><span class="tag tag-bear">High Headwind</span> Pressure on AI hardware infrastructure and semi stocks.</td>
+            <td>Midterm regulatory shift, data center power moratoria & hyperscaler capex anxiety</td>
+            <td><span class="tag tag-bear">High Risk</span> Pressure on AI hardware supply chains, dragging Nasdaq down ~11.9% from peak.</td>
           </tr>
           <tr>
             <td><b>Malaysia</b></td>
             <td>BNM holds OPR at 2.75% on >5% GDP growth; Ringgit firms to ~4.04/USD</td>
-            <td><span class="tag tag-bull">Domestic Cushion</span> Sustained foreign institutional accumulation in banking.</td>
+            <td><span class="tag tag-bull">Domestic Cushion</span> 8 consecutive sessions of foreign institutional net buying in Banking.</td>
           </tr>
           <tr>
             <td><b>KR / TW / JP</b></td>
-            <td>Chip export warnings; TSMC, Samsung, SK Hynix intraday volatility</td>
-            <td><span class="tag tag-warn">OSAT Spillover</span> Ripple pressure on Malaysian assembly & test counters.</td>
+            <td>TSMC, Samsung, SK Hynix intraday volatility; cautious smartphone/PC guidance</td>
+            <td><span class="tag tag-warn">OSAT Spillover</span> Ripple pressure on Malaysian OSAT and ATE semiconductor exporters (MPI, Inari).</td>
           </tr>
           <tr>
-            <td><b>China / HK</b></td>
-            <td>PBoC liquidity injections & bond swap facilities</td>
-            <td><span class="tag tag-bull">Trade Support</span> Stabilizes regional commodity demand & ASEAN supply chains.</td>
+            <td><b>China & HK</b></td>
+            <td>PBoC liquidity injections and bond swap facilities</td>
+            <td><span class="tag tag-bull">Trade Support</span> Stabilizes ASEAN supply chain liquidity and regional commodity demand.</td>
           </tr>
         </tbody>
       </table>
@@ -271,72 +376,132 @@
     <div class="card">
       <div class="card-title">
         <span>⚖️ Module 2: Market Regime Classifier</span>
-        <span class="tag tag-bull">UPDATED</span>
+        <span class="tag tag-info">ANALYST VERDICT</span>
       </div>
-      <div style="margin-bottom: 14px; padding: 12px; border-radius: 8px; background: rgba(239, 68, 68, 0.1); border-left: 4px solid var(--accent-red);">
+      <div style="margin-bottom: 14px; padding: 14px; border-radius: 8px; background: rgba(239, 68, 68, 0.1); border-left: 4px solid var(--accent-red);">
         <h4 style="color: var(--accent-red); margin-bottom: 4px;">🇺🇸 United States: SHORT-TERM CORRECTION | LONG-TERM BULL</h4>
-        <p style="font-size: 0.85rem; color: var(--text-muted);">
-          <b>Why:</b> Nasdaq pulled back ~11.9% from its peak due to extreme mega-cap concentration, hyperscaler cash-burn anxiety (e.g., Meta's $135B+ capex and negative Q3 free cash flow), and post-election data center reviews.
+        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 6px;">
+          <b>Why:</b> Valuation fatigue meets high borrowing costs (10Y yield @ 4.89%). Hyperscalers (Meta, Google, Microsoft) face intense scrutiny over whether multi-billion AI capex can yield timely cash flow.
         </p>
+        <span class="tag tag-bear">Action: Staggered DCA Only (Avoid All-In)</span>
       </div>
 
-      <div style="padding: 12px; border-radius: 8px; background: rgba(16, 185, 129, 0.1); border-left: 4px solid var(--accent-green);">
+      <div style="padding: 14px; border-radius: 8px; background: rgba(16, 185, 129, 0.1); border-left: 4px solid var(--accent-green);">
         <h4 style="color: var(--accent-green); margin-bottom: 4px;">🇲🇾 Malaysia (KLCI): CAUTIOUSLY BULLISH | TECH PULLBACK</h4>
-        <p style="font-size: 0.85rem; color: var(--text-muted);">
-          <b>Why:</b> Backed by resilient macro data, benign 1.8% inflation, a firm Ringgit, and steady foreign net buying in banking heavyweights, counterbalancing US tech volatility.
+        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 6px;">
+          <b>Why:</b> Grounded by benign 1.8% inflation, resilient corporate earnings, and strong foreign accumulation into financial heavyweights, partially offset by tech/power stock profit taking.
         </p>
+        <span class="tag tag-bull">Action: Overweight Financials & High-Yield Dividends</span>
       </div>
     </div>
   </div>
 
   <div class="grid-2">
-    <!-- MODULE 3: AI BUBBLE WATCH & SECTOR ROTATION -->
+    <!-- MODULE 3: AI BUBBLE WATCH & ROTATION RADAR -->
     <div class="card">
       <div class="card-title">
         <span>🔄 Module 3: AI Bubble Watch & Rotation Radar</span>
-        <span class="tag tag-warn">CYCLE ANALYSIS</span>
+        <span class="tag tag-warn">CYCLE STAGE</span>
       </div>
       <table>
         <thead>
           <tr>
             <th>Sector / Theme</th>
             <th>Lifecycle Stage</th>
-            <th>Institutional Action</th>
+            <th>Planner Guidance</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <td><b>AI Hardware & GPUs</b><br><small style="color: var(--text-muted);">NVDA, AMD, MPI, INARI</small></td>
             <td><span class="tag tag-bear">Valuation Reset</span></td>
-            <td>Profit taking amid power bottlenecks and moratorium concerns.</td>
+            <td>Capex exhaustion and power bottlenecks. Wait for basing pattern before adding.</td>
           </tr>
           <tr>
-            <td><b>Broad Indices & Core Tech</b><br><small style="color: var(--text-muted);">VOO, QQQM, META, MSFT</small></td>
-            <td><span class="tag tag-bull">DCA Accumulation</span></td>
-            <td>Accumulating quality cash-flow compounders at compressed forward multiples.</td>
+            <td><b>Broad ETFs & Monetizers</b><br><small style="color: var(--text-muted);">VOO, QQQM, META, MSFT</small></td>
+            <td><span class="tag tag-bull">Accumulation Zone</span></td>
+            <td>Compressed forward multiples (Meta at ~18x) offer attractive risk-reward for phased DCA.</td>
           </tr>
           <tr>
-            <td><b>Malaysian Financials</b><br><small style="color: var(--text-muted);">Maybank, Public Bank, CIMB</small></td>
+            <td><b>MY Financials & Plantations</b><br><small style="color: var(--text-muted);">Maybank, CIMB, KLK</small></td>
             <td><span class="tag tag-bull">Rotation Leader</span></td>
-            <td>Foreign inflows seeking solid dividends and rate stability.</td>
+            <td>Beneficiary of stable BNM rates, foreign inflows, and strong dividend yields (5–6%).</td>
           </tr>
         </tbody>
       </table>
     </div>
 
-    <!-- MODULE 4: VIX-ADJUSTED DCA & FX HEDGE CALCULATOR -->
+    <!-- MODULE 4: INSTITUTIONAL VALUATION & SUPPORT SCORECARD -->
     <div class="card">
       <div class="card-title">
-        <span>🛠️ Module 4: DCA & FX Return Calculator</span>
-        <span class="tag tag-bull">INTERACTIVE</span>
+        <span>📋 Module 4: Valuation & Technical Support Matrix</span>
+        <span class="tag tag-info">TARGET LEVELS</span>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Asset</th>
+            <th>Fwd P/E</th>
+            <th>Drawdown</th>
+            <th>Critical Support</th>
+            <th>Analyst Rating</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><b>META</b></td>
+            <td>~18x</td>
+            <td>-21.9%</td>
+            <td>\$520 – \$550</td>
+            <td><span class="tag tag-bull">Strong Buy (DCA)</span></td>
+          </tr>
+          <tr>
+            <td><b>VOO</b></td>
+            <td>~22x</td>
+            <td>-4.4%</td>
+            <td>\$640 – \$650</td>
+            <td><span class="tag tag-bull">Core Anchor Buy</span></td>
+          </tr>
+          <tr>
+            <td><b>QQQM</b></td>
+            <td>~25x</td>
+            <td>-11.9%</td>
+            <td>\$245 – \$250</td>
+            <td><span class="tag tag-bull">Tactical Accumulate</span></td>
+          </tr>
+          <tr>
+            <td><b>Maybank</b></td>
+            <td>~11x</td>
+            <td>-2.1%</td>
+            <td>RM 10.10</td>
+            <td><span class="tag tag-bull">Defensive Hold/Add</span></td>
+          </tr>
+          <tr>
+            <td><b>Tenaga</b></td>
+            <td>~15x</td>
+            <td>-8.6%</td>
+            <td>RM 12.50</td>
+            <td><span class="tag tag-warn">Watch DC Approvals</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <!-- MODULE 5: VIX-ADJUSTED DCA & FX CONVERSION CALCULATOR -->
+    <div class="card">
+      <div class="card-title">
+        <span>🛠️ Module 5: Dynamic DCA & FX Capital Allocator</span>
+        <span class="tag tag-bull">PORTFOLIO SIZING</span>
       </div>
       <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
         <div class="calc-input-group">
-          <label>Total Capital (MYR):</label>
+          <label>Total Available Capital (MYR):</label>
           <input type="number" id="input-myr" value="50000" oninput="calculatePlan()">
         </div>
         <div class="calc-input-group">
-          <label>Spot USD/MYR Rate:</label>
+          <label>Spot USD/MYR Conversion Rate:</label>
           <input type="number" id="input-fx" value="4.0445" step="0.005" oninput="calculatePlan()">
         </div>
       </div>
@@ -344,111 +509,80 @@
       <div class="calc-results-box">
         <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
           <span style="color: var(--text-muted);">Total Capital in USD:</span>
-          <span class="highlight-val" id="total-usd">$12,362.47</span>
+          <span class="highlight-val" id="total-usd">\$12,362.47</span>
         </div>
         <hr style="border-color: var(--card-border); margin: 8px 0;">
-        <p style="font-size: 0.85rem; font-weight: 600; margin-bottom: 6px;">3-Tranche Staggered Entry Plan:</p>
+        <p style="font-size: 0.85rem; font-weight: 600; margin-bottom: 6px;">VIX-Adjusted 3-Tranche Execution Schedule:</p>
         <ul style="font-size: 0.8rem; color: var(--text-muted); list-style: none;">
-          <li id="tranche-1" style="padding: 2px 0;">• Tranche 1 (Immediate Entry - 35%): <b>$4,326.86</b></li>
-          <li id="tranche-2" style="padding: 2px 0;">• Tranche 2 (Wait 2–3 wks / -5% dip - 35%): <b>$4,326.86</b></li>
-          <li id="tranche-3" style="padding: 2px 0;">• Tranche 3 (Trend Confirmation - 30%): <b>$3,708.74</b></li>
+          <li id="tranche-1" style="padding: 3px 0;">• Tranche 1 (Immediate - 35%): <b>\$4,326.86</b></li>
+          <li id="tranche-2" style="padding: 3px 0;">• Tranche 2 (Wait 2–3 wks / -5% dip - 35%): <b>\$4,326.86</b></li>
+          <li id="tranche-3" style="padding: 3px 0;">• Tranche 3 (Reclaim 50 SMA - 30%): <b>\$3,708.74</b></li>
         </ul>
         <hr style="border-color: var(--card-border); margin: 8px 0;">
         <p style="font-size: 0.8rem; color: var(--accent-yellow);">
-          <b>Target Allocation:</b> 50% VOO (~$<span id="alloc-voo">6,181</span>) | 30% QQQM (~$<span id="alloc-qqqm">3,708</span>) | 20% META (~$<span id="alloc-meta">2,472</span>)
+          <b>Target Allocation:</b> 50% VOO (~\$<span id="alloc-voo">6,181</span>) | 30% QQQM (~\$<span id="alloc-qqqm">3,708</span>) | 20% META (~$<span id="alloc-meta">2,472</span>)
         </p>
+      </div>
+    </div>
+
+    <!-- MODULE 6: TRADER'S 1%–2% RISK & POSITION SIZER CALCULATOR -->
+    <div class="card">
+      <div class="card-title">
+        <span>🛡️ Module 6: Position Sizer & Stop-Loss Engine</span>
+        <span class="tag tag-warn">CAPITAL DEFENSE</span>
+      </div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+        <div class="calc-input-group">
+          <label>Account Equity (\$ USD):</label>
+          <input type="number" id="risk-equity" value="25000" oninput="calculateRisk()">
+        </div>
+        <div class="calc-input-group">
+          <label>Max Risk Per Trade (%):</label>
+          <select id="risk-pct" onchange="calculateRisk()">
+            <option value="1">1.0% (Conservative)</option>
+            <option value="1.5" selected>1.5% (Balanced)</option>
+            <option value="2">2.0% (Aggressive)</option>
+          </select>
+        </div>
+      </div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+        <div class="calc-input-group">
+          <label>Entry Price ($):</label>
+          <input type="number" id="risk-entry" value="608.72" oninput="calculateRisk()">
+        </div>
+        <div class="calc-input-group">
+          <label>Stop-Loss Price ($):</label>
+          <input type="number" id="risk-stop" value="550.00" oninput="calculateRisk()">
+        </div>
+      </div>
+
+      <div class="calc-results-box">
+        <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+          <span style="color: var(--text-muted);">Max Allowable Dollar Loss:</span>
+          <span style="font-weight: 700; color: var(--accent-red);" id="risk-max-loss">\$375.00</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+          <span style="color: var(--text-muted);">Max Position Size (Shares):</span>
+          <span class="highlight-val" id="risk-shares">6 Shares</span>
+        </div>
+        <div style="display: flex; justify-content: space-between;">
+          <span style="color: var(--text-muted);">Target 2:1 Profit Exit:</span>
+          <span style="font-weight: 700; color: var(--accent-green);" id="risk-target">\$726.16</span>
+        </div>
       </div>
     </div>
   </div>
 
-  <script>
-    function updateClocks() {
-      const now = new Date();
-
-      // Bursa Malaysia (UTC+8)
-      const myTime = new Date(now.toLocaleString("en-US", {timeZone: "Asia/Kuala_Lumpur"}));
-      const myDay = myTime.getDay();
-      const myHour = myTime.getHours();
-      const myMin = myTime.getMinutes();
-      const myTotalMin = myHour * 60 + myMin;
-
-      let bursaOpen = false;
-      let bursaBreak = false;
-      if (myDay >= 1 && myDay <= 5) {
-        if ((myTotalMin >= 540 && myTotalMin <= 750) || (myTotalMin >= 870 && myTotalMin <= 1020)) {
-          bursaOpen = true;
-        } else if (myTotalMin > 750 && myTotalMin < 870) {
-          bursaBreak = true;
-        }
-      }
-
-      const bursaDot = document.getElementById("bursa-dot");
-      const bursaText = document.getElementById("bursa-text");
-      if (bursaOpen) {
-        bursaDot.className = "status-dot dot-green";
-        bursaText.innerText = "Bursa Malaysia: OPEN (MYT)";
-      } else if (bursaBreak) {
-        bursaDot.className = "status-dot dot-yellow";
-        bursaText.innerText = "Bursa Malaysia: MIDDAY BREAK";
-      } else {
-        bursaDot.className = "status-dot dot-red";
-        bursaText.innerText = "Bursa Malaysia: CLOSED";
-      }
-
-      // US Wall Street (America/New_York)
-      const usTime = new Date(now.toLocaleString("en-US", {timeZone: "America/New_York"}));
-      const usDay = usTime.getDay();
-      const usHour = usTime.getHours();
-      const usMin = usTime.getMinutes();
-      const usTotalMin = usHour * 60 + usMin;
-
-      let usOpen = false;
-      let usPre = false;
-      if (usDay >= 1 && usDay <= 5) {
-        if (usTotalMin >= 570 && usTotalMin <= 960) {
-          usOpen = true;
-        } else if (usTotalMin >= 240 && usTotalMin < 570) {
-          usPre = true;
-        }
-      }
-
-      const usDot = document.getElementById("us-dot");
-      const usText = document.getElementById("us-text");
-      if (usOpen) {
-        usDot.className = "status-dot dot-green";
-        usText.innerText = "US Markets: REGULAR HOURS (EST)";
-      } else if (usPre) {
-        usDot.className = "status-dot dot-yellow";
-        usText.innerText = "US Markets: PRE-MARKET";
-      } else {
-        usDot.className = "status-dot dot-red";
-        usText.innerText = "US Markets: CLOSED";
-      }
-    }
-
-    function calculatePlan() {
-      const myr = parseFloat(document.getElementById("input-myr").value) || 0;
-      const fx = parseFloat(document.getElementById("input-fx").value) || 4.0445;
-      const usd = myr / fx;
-
-      document.getElementById("total-usd").innerText = "$" + usd.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
-
-      const t1 = usd * 0.35;
-      const t2 = usd * 0.35;
-      const t3 = usd * 0.30;
-
-      document.getElementById("tranche-1").innerHTML = `• Tranche 1 (Immediate Entry - 35%): <b>$${t1.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</b>`;
-      document.getElementById("tranche-2").innerHTML = `• Tranche 2 (Wait 2–3 wks / -5% dip - 35%): <b>$${t2.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</b>`;
-      document.getElementById("tranche-3").innerHTML = `• Tranche 3 (Trend Confirmation - 30%): <b>$${t3.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</b>`;
-
-      document.getElementById("alloc-voo").innerText = (usd * 0.50).toLocaleString('en-US', {maximumFractionDigits: 0});
-      document.getElementById("alloc-qqqm").innerText = (usd * 0.30).toLocaleString('en-US', {maximumFractionDigits: 0});
-      document.getElementById("alloc-meta").innerText = (usd * 0.20).toLocaleString('en-US', {maximumFractionDigits: 0});
-    }
-
-    setInterval(updateClocks, 1000);
-    updateClocks();
-    calculatePlan();
-  </script>
-</body>
-</html>
+  <div class="grid-2">
+    <!-- MODULE 7: MACRO CATALYST & INDEX EXPANSION CALENDAR -->
+    <div class="card">
+      <div class="card-title">
+        <span>📅 Module 7: Macro Catalyst & Event Radar</span>
+        <span class="tag tag-info">UPCOMING DATES</span>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Event / Catalyst</th>
+            <th>Market Impact</th>
+         
